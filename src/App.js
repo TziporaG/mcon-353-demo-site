@@ -57,6 +57,7 @@ function App() {
               variant="h5"
               component="div"
               color="#e91e63"
+              sx={{ fontStyle: "normal" }}
             >
               Nature
             </Typography>
@@ -75,6 +76,7 @@ function App() {
               variant="h5"
               component="div"
               color="#e91e63"
+              sx={{ fontStyle: "normal" }}
             >
               Technology
             </Typography>
@@ -94,6 +96,7 @@ function App() {
               variant="h5"
               component="div"
               color="#e91e63"
+              sx={{ fontStyle: "normal" }}
             >
               Drawing
             </Typography>
