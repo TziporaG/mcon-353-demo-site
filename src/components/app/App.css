@@ -7,14 +7,31 @@
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(15px + 2vmin);
   font-style: italic;
   color: #e91e63;
+  margin: auto;
+}
+
+.input {
+  background-color: #fcc9df;
+  width: 55%;
+  border: none;
+  border-bottom: 1px solid #e91e63;
+  text-align: left;
+  font-size: calc(20px + 2vmin);
+  color: #e91e63;
+}
+
+input:focus {
+  border: none;
+  border-bottom: 1px solid #e91e63;
+  outline-offset: 0px;
+  outline: none;
 }
 
 .cardDiv {
   justify-content: center;
-  padding: 50px;
   display: flex;
   flex-direction: row;
 }
@@ -34,7 +51,7 @@
 
 .App-sub-header {
   text-align: center;
-  font-size: calc(40px + 2vmin);
+  font-size: calc(60px + 2vmin);
   color: #e91e63;
   font-style: normal;
 }

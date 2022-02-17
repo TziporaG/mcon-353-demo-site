@@ -1,7 +1,6 @@
 import logo1 from "./tulips.jpg";
 import logo2 from "./laptop.jpg";
 import logo3 from "./pencils.jpg";
-import "./App.css";
 import { Avatar, Card } from "@mui/material";
 import React from "react";
 import { pink } from "@mui/material/colors";
@@ -11,13 +10,10 @@ import Typography from "@mui/material/Typography";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 
-function App() {
+export function Home() {
   return (
     <div className="App">
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+    <div style={{marginBottom: '200px'}}></div>
 
       <Avatar sx={{ bgcolor: pink[50], width: 80, height: 80 }}>
         <FavoriteBorderIcon sx={{ color: pink[500], width: 50, height: 50 }} />
@@ -38,14 +34,7 @@ function App() {
         sx={{ color: pink[500], width: 80, height: 100 }}
       />
 
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
+      <div style={{marginBottom: '250px'}}></div> 
       <header className="App-sub-header">Some things I enjoy</header>
 
       <div className="cardDiv">
@@ -120,4 +109,3 @@ function App() {
   );
 }
 
-export default App;
