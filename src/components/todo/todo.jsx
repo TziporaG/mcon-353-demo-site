@@ -4,7 +4,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { pink } from "@mui/material/colors";
 
-function Todo(props) {
+function ToDoItem(props) {
   const completeTodo = (index) => {
     const newTodos = [...props.todos];
     newTodos[props.index].isCompleted = true;
@@ -48,7 +48,7 @@ function Todo(props) {
   );
 }
 
-function TodoForm({ addTodo }) {
+function TodoInputItem({ addTodo }) {
   const [inputToDoItem, setInputToDoItem] = React.useState("");
 
   const handleSubmit = (e) => {
@@ -86,7 +86,7 @@ export const ToDo = () => {
     <div className="App">
       <h1 className="App-sub-header">To Do</h1>
 
-      <TodoForm addTodo={addTodo} />
+      <TodoInputItem addTodo={addTodo} />
       <p
         style={{
           border: "5px solid #e91e63",
@@ -97,7 +97,7 @@ export const ToDo = () => {
         }}
       >
         {todos.map((todo, index) => (
-          <Todo
+          <ToDoItem
             key={index}
             index={index}
             todo={todo}
