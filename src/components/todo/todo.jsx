@@ -1,21 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { pink } from "@mui/material/colors";
+import { ListContext } from "../app/App";
 
 function ToDoItem(props) {
-  const completeTodo = (index) => {
-    const newTodos = [...props.todos];
-    newTodos[props.index].isCompleted = true;
-    props.setTodos(newTodos);
-  };
-
-  const removeTodo = (index) => {
-    const newTodos = [...props.todos];
-    newTodos.splice(props.index, 1);
-    props.setTodos(newTodos);
-  };
+  const listContext = useContext(ListContext);
 
   return (
     <table
@@ -27,34 +18,50 @@ function ToDoItem(props) {
         color: props.todo.isCompleted ? pink[200] : "",
       }}
     >
-      <tr>
-        <td style={{ width: "10%" }}>
-          <CheckCircleOutlineIcon
-            fontSize="large"
-            onClick={() => completeTodo(props.index)}
-          />
-        </td>
-        <td style={{ width: "80%", textAlign: "left" }}>{props.todo.text}</td>
+      <tbody>
+        <tr>
+          <td style={{ width: "10%" }}>
+            <CheckCircleOutlineIcon
+              fontSize="large"
+              onClick={() =>
+                listContext.listDispatch({
+                  type: "completeItem",
+                  index: props.index,
+                })
+              }
+            />
+          </td>
+          <td style={{ width: "80%", textAlign: "left" }}>{props.todo.text}</td>
 
-        <td style={{ width: "10%" }}>
-          <DeleteOutlineIcon
-            sx={{ color: pink[300] }}
-            fontSize="large"
-            onClick={() => removeTodo(props.index)}
-          ></DeleteOutlineIcon>
-        </td>
-      </tr>
+          <td style={{ width: "10%" }}>
+            <DeleteOutlineIcon
+              sx={{ color: pink[300] }}
+              fontSize="large"
+              onClick={() =>
+                listContext.listDispatch({
+                  type: "removeItem",
+                  index: props.index,
+                })
+              }
+            ></DeleteOutlineIcon>
+          </td>
+        </tr>
+      </tbody>
     </table>
   );
 }
 
-function TodoInputItem({ addTodo }) {
+function TodoInputItem() {
+  const listContext = useContext(ListContext);
   const [inputToDoItem, setInputToDoItem] = React.useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!inputToDoItem) return;
-    addTodo(inputToDoItem);
+    listContext.listDispatch({
+      type: "addItem",
+      text: inputToDoItem,
+    });
     setInputToDoItem("");
   };
 
@@ -75,37 +82,31 @@ function TodoInputItem({ addTodo }) {
 }
 
 export const ToDo = () => {
-  const [todos, setTodos] = React.useState([]);
-
-  const addTodo = (text) => {
-    const newTodos = [...todos, { text }];
-    setTodos(newTodos);
-  };
+  const listContext = useContext(ListContext);
 
   return (
     <div className="App">
       <h1 className="App-sub-header">To Do</h1>
 
-      <TodoInputItem addTodo={addTodo} />
-      <p
+      <TodoInputItem />
+      <span
         style={{
           border: "5px solid #e91e63",
           width: "65%",
-          height: "500px",
+          height: "450px",
           marginTop: "10px",
           padding: "0px",
         }}
       >
-        {todos.map((todo, index) => (
+        {listContext.listState.map((todo, index) => (
           <ToDoItem
             key={index}
             index={index}
             todo={todo}
-            todos={todos}
-            setTodos={setTodos}
+            todos={listContext.listState}
           />
         ))}
-      </p>
+      </span>
     </div>
   );
 };

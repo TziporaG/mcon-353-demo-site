@@ -13,7 +13,7 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 export function Home() {
   return (
     <div className="App">
-    <div style={{marginBottom: '200px'}}></div>
+      <div style={{ marginBottom: "150px" }}></div>
 
       <Avatar sx={{ bgcolor: pink[50], width: 80, height: 80 }}>
         <FavoriteBorderIcon sx={{ color: pink[500], width: 50, height: 50 }} />
@@ -34,7 +34,7 @@ export function Home() {
         sx={{ color: pink[500], width: 80, height: 100 }}
       />
 
-      <div style={{marginBottom: '250px'}}></div> 
+      <div style={{ marginBottom: "250px" }}></div>
       <header className="App-sub-header">Some things I enjoy</header>
 
       <div className="cardDiv">
@@ -108,4 +108,3 @@ export function Home() {
     </div>
   );
 }
-

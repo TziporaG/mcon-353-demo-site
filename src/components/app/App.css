@@ -19,7 +19,7 @@
   border: none;
   border-bottom: 1px solid #e91e63;
   text-align: left;
-  font-size: calc(20px + 2vmin);
+  font-size: calc(15px + 2vmin);
   color: #e91e63;
 }
 
@@ -44,14 +44,14 @@ input:focus {
 
 .App-header {
   text-align: center;
-  font-size: calc(65px + 2vmin);
+  font-size: calc(40px + 2vmin);
   color: #e91e63;
   font-style: normal;
 }
 
 .App-sub-header {
   text-align: center;
-  font-size: calc(60px + 2vmin);
+  font-size: calc(30px + 2vmin);
   color: #e91e63;
   font-style: normal;
 }
