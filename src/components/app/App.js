@@ -31,7 +31,7 @@ const changeToDoListReducer = (state, action) => {
 export const ListContext = React.createContext();
 
 function App() {
-  const [toDoState, listDispatch] = useReducer(
+  const [toDoState, dispatchChangeToDoList] = useReducer(
     changeToDoListReducer,
     initialList
   );
