@@ -4,6 +4,7 @@ import { Home } from "../home/home";
 import { ToDo } from "../todo/todo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "../header/header";
+import { Chat } from "../chat/chat";
 
 var initialList = [];
 const changeToDoListReducer = (state, action) => {
@@ -49,6 +50,7 @@ function App() {
               path="/todo"
               element={<ToDo dispatchChangeToDoList />}
             ></Route>
+            <Route path="/chat" element={<Chat />}></Route>
           </Routes>
         </BrowserRouter>
       </div>

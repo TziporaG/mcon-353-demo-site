@@ -15,7 +15,7 @@ export function Home() {
     <div className="App">
       <div style={{ marginBottom: "150px" }}></div>
 
-      <Avatar sx={{ bgcolor: pink[50], width: 80, height: 80 }}>
+      <Avatar sx={{ bgcolor: "lavenderblush", width: 80, height: 80 }}>
         <FavoriteBorderIcon sx={{ color: pink[500], width: 50, height: 50 }} />
       </Avatar>
       <br></br>

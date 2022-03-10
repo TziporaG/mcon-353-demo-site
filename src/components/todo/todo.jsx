@@ -89,15 +89,7 @@ export const ToDo = () => {
       <h1 className="App-sub-header">To Do</h1>
 
       <TodoInputItem />
-      <span
-        style={{
-          border: "5px solid #e91e63",
-          width: "65%",
-          height: "450px",
-          marginTop: "10px",
-          padding: "0px",
-        }}
-      >
+      <span id="displayBox">
         {listContext.listState.map((todo, index) => (
           <ToDoItem
             key={index}

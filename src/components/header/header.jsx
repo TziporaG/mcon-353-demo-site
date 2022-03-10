@@ -17,6 +17,7 @@ import { Avatar } from "@mui/material";
 const pages = [
   { title: "Home", path: "/" },
   { title: "ToDo", path: "/todo" },
+  { title: "Chat", path: "/chat" },
 ];
 
 export const Header = () => {
