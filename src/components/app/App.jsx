@@ -5,7 +5,8 @@ import { ToDo } from "../todo/todo";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "../header/header";
 import { Chat } from "../chat/chat";
-
+import { TodoProvider } from "./context";
+/*
 var initialList = [];
 const changeToDoListReducer = (state, action) => {
   var newTodos = [];
@@ -30,31 +31,24 @@ const changeToDoListReducer = (state, action) => {
 };
 
 export const ListContext = React.createContext();
-
+*/
 function App() {
-  const [toDoState, dispatchChangeToDoList] = useReducer(
+  /*const [toDoState, dispatchChangeToDoList] = useReducer(
     changeToDoListReducer,
     initialList
-  );
+  );*/
 
   return (
-    <ListContext.Provider
-      value={{ listState: toDoState, listDispatch: dispatchChangeToDoList }}
-    >
-      <div>
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route
-              path="/todo"
-              element={<ToDo dispatchChangeToDoList />}
-            ></Route>
-            <Route path="/chat" element={<Chat />}></Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </ListContext.Provider>
+    <TodoProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/todo" element={<ToDo />} />
+          <Route path="/chat" element={<Chat />} />
+        </Routes>
+      </BrowserRouter>
+    </TodoProvider>
   );
 }
 

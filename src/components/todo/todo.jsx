@@ -3,10 +3,10 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { pink } from "@mui/material/colors";
-import { ListContext } from "../app/App";
+import { TodoContext } from "../app/context";
 
 function ToDoItem(props) {
-  const listContext = useContext(ListContext);
+  const listContext = useContext(TodoContext);
 
   return (
     <table
@@ -52,7 +52,7 @@ function ToDoItem(props) {
 }
 
 function TodoInputItem() {
-  const listContext = useContext(ListContext);
+  const listContext = useContext(TodoContext);
   const [inputToDoItem, setInputToDoItem] = React.useState("");
 
   const handleSubmit = (e) => {
@@ -82,7 +82,7 @@ function TodoInputItem() {
 }
 
 export const ToDo = () => {
-  const listContext = useContext(ListContext);
+  const listContext = useContext(TodoContext);
 
   return (
     <div className="App">
