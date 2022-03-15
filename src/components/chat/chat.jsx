@@ -105,8 +105,21 @@ export const Chat = () => {
   };
 
   const addChatRoom = (name) => {
-    const newChatRooms = [...chatRoomsList, { name }];
-    setChatRoomsList(newChatRooms);
+    const chat = {
+      name: name,
+    };
+
+    fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(chat),
+    }).then(
+      fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats")
+        .then((response) => response.json())
+        .then((data) => setChatRoomsList(data.results))
+    );
   };
 
   return (
@@ -128,7 +141,7 @@ export const Chat = () => {
               &nbsp;Chat Rooms
               <InputNewChat addChatRoom={addChatRoom} />
               <List>
-                {chatRoomsList.map((room, index) => (
+                {chatRoomsList.map(({ room }, index) => (
                   <ChatRoomListItem
                     key={index}
                     index={index}
