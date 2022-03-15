@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { pink } from "@mui/material/colors";
+import { useInterval } from "./use-interval.jsx";
 
 function Message(props) {
   return (
@@ -37,7 +38,10 @@ function ChatRoomListItem(props) {
   return (
     <span>
       <ListItem button>
-        <ListItemText primary={props.name} />
+        <ListItemText
+          primary={props.name}
+          onClick={() => props.setCurrMessages(props.id)}
+        />
       </ListItem>
       <Divider />
     </span>
@@ -99,27 +103,72 @@ export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatRoomsList, setChatRoomsList] = useState([]);
 
+  useInterval(() => {
+    fetch(`https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats`)
+      .then((response) => response.json())
+      .then((data) => {
+        setChatRoomsList(data.Items);
+      });
+  }, 1000);
+
+  /** ADD THIS IN: PROB USING STATE. ADD CURRENT CHAT ID AND USE THAT TO SEND IN A MESSAGE
+  useInterval(
+    (params) => {
+      const chatId = params[0];
+      fetch(
+        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${chatId}/messages`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          props.setCurrMessages(data.Items);
+        });
+    },
+    1000,
+    props.chatId
+  );*/
+
   const addMessage = (text) => {
-    const newMessages = [...messages, { text }];
-    setMessages(newMessages);
+    fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(text),
+    });
   };
 
   const addChatRoom = (name) => {
     const chat = {
       name: name,
     };
+    addChatRoomAPI(chat);
+  };
 
+  const addChatRoomAPI = (chat) => {
     fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(chat),
-    }).then(
-      fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats")
-        .then((response) => response.json())
-        .then((data) => setChatRoomsList(data.results))
-    );
+    });
+  };
+
+  /*
+  const getChats = () => {
+    fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats")
+      .then((response) => response.json())
+      .then((data) => setChatRoomsList({ rooms: data }));
+  };*/
+
+  const setCurrMessages = (chatId) => {
+    fetch(
+      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${chatId}/messages`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages(data.Items);
+      });
   };
 
   return (
@@ -141,11 +190,13 @@ export const Chat = () => {
               &nbsp;Chat Rooms
               <InputNewChat addChatRoom={addChatRoom} />
               <List>
-                {chatRoomsList.map(({ room }, index) => (
+                {chatRoomsList.map((room, index) => (
                   <ChatRoomListItem
                     key={index}
                     index={index}
                     name={room.name}
+                    id={room.id}
+                    setCurrMessages={setCurrMessages}
                   />
                 ))}
               </List>
