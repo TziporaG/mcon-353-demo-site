@@ -48,7 +48,7 @@ function ChatRoomListItem(props) {
       <ListItem button>
         <ListItemText
           primary={props.name}
-          onClick={() => props.handleChatRoomClicked(props)}
+          onClick={() => props.handleChatRoomClicked(props.id, props.name)}
         />
       </ListItem>
       <Divider />
@@ -109,7 +109,7 @@ function SendChatInput({ addMessage }) {
 
 function UsernameInput({ setUsername }) {
   const [newUsername, setUsernameInput] = useState("");
-  const [signedInUser, setSignedInUser] = useState("Not signed in");
+  const [signedInUser, setSignedInUser] = useState("");
 
   const handleNewUser = (e) => {
     e.preventDefault();
@@ -150,12 +150,11 @@ function UsernameInput({ setUsername }) {
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatRoomsList, setChatRoomsList] = useState([]);
-  //Set to a default chat
-  const [currChat, setCurrChat] = useState({
-    chatId: "952a73df-52d3-432f-afc7-b3c87ea8a09a",
-    name: "asdf",
-  });
+  const [currChatID, setCurrChatID] = useState(
+    "952a73df-52d3-432f-afc7-b3c87ea8a09a"
+  );
   const [username, setUsername] = useState("");
+  const [currChatName, setCurrChatName] = useState("asdf");
 
   useInterval(() => {
     fetch(`https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats`)
@@ -168,7 +167,7 @@ export const Chat = () => {
   useInterval(
     () => {
       fetch(
-        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChat.chatId}/messages`
+        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -176,12 +175,12 @@ export const Chat = () => {
         });
     },
     1000,
-    currChat.chatId
+    currChatID
   );
 
   const addMessage = (text) => {
     const message = {
-      chatId: currChat.chatId,
+      chatId: currChatID,
       username: username,
       text: text,
     };
@@ -215,16 +214,17 @@ export const Chat = () => {
     });
   };
 
-  const handleChatRoomClicked = (chat) => {
+  const handleChatRoomClicked = (chatId, chatName) => {
     fetch(
-      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChat.chatId}/messages`
+      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
     )
       .then((response) => response.json())
       .then((data) => {
         setMessages(data.Items);
       });
 
-    setCurrChat({ chat });
+    setCurrChatID(chatId);
+    setCurrChatName(chatName);
   };
 
   return (
@@ -253,13 +253,13 @@ export const Chat = () => {
                     backgroundColor: "lavenderblush",
                   }}
                 >
-                  &nbsp;Chat Rooms
+                  &nbsp;Chat Rooms &nbsp;&nbsp;
                   <div
                     style={{
                       fontSize: "17px",
                     }}
                   >
-                    &nbsp;&nbsp;Current Chat Room: {currChat.name}
+                    Current Chat Room: {currChatName}
                   </div>
                   <InputNewChat addChatRoom={addChatRoom} />
                 </div>
