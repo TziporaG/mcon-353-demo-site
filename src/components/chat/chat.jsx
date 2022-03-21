@@ -16,7 +16,7 @@ function Message(props) {
   return (
     <span
       style={{
-        textAlign: /*props.userName == this.userName ? "left" : */ "right",
+        textAlign: props.userName == props.signedInUser ? "left" : "right",
         display: "block",
       }}
     >
@@ -40,7 +40,7 @@ function ChatRoomListItem(props) {
       <ListItem button>
         <ListItemText
           primary={props.name}
-          onClick={() => props.setCurrMessages(props.id)}
+          onClick={() => props.handleChatRoomClicked(props.id)}
         />
       </ListItem>
       <Divider />
@@ -99,9 +99,53 @@ function SendChatInput({ addMessage }) {
   );
 }
 
+function UsernameInput({ setUsername }) {
+  const [newUsername, setUsernameInput] = useState("");
+  const [signedInUser, setSignedInUser] = useState("");
+
+  const handleNewUser = (e) => {
+    e.preventDefault();
+    if (!newUsername) return;
+    setUsername(newUsername);
+    setUsernameInput("");
+
+    setSignedInUser(newUsername);
+  };
+
+  return (
+    <div style={{ width: "100%" }}>
+      <form onSubmit={handleNewUser}>
+        <span style={{ fontSize: "17px" }}>Current User: {signedInUser}</span>
+        <input
+          style={{ width: "30%" }}
+          className="input"
+          value={newUsername}
+          onChange={(e) => setUsernameInput(e.target.value)}
+          placeholder="enter user name"
+        ></input>
+        <Button
+          sx={{
+            color: pink[500],
+            textTransform: "none",
+            fontFamily: "Calibri",
+            fontSize: "17px",
+          }}
+          onClick={handleNewUser}
+        >
+          Sign in{" "}
+        </Button>
+      </form>
+    </div>
+  );
+}
+
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatRoomsList, setChatRoomsList] = useState([]);
+  const [currChatID, setCurrChatID] = useState(
+    "952a73df-52d3-432f-afc7-b3c87ea8a09a"
+  );
+  const [username, setUsername] = useState("");
 
   useInterval(() => {
     fetch(`https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats`)
@@ -111,30 +155,37 @@ export const Chat = () => {
       });
   }, 1000);
 
-  /** ADD THIS IN: PROB USING STATE. ADD CURRENT CHAT ID AND USE THAT TO SEND IN A MESSAGE
   useInterval(
-    (params) => {
-      const chatId = params[0];
+    () => {
       fetch(
-        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${chatId}/messages`
+        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
       )
         .then((response) => response.json())
         .then((data) => {
-          props.setCurrMessages(data.Items);
+          setMessages(data.Items);
         });
     },
     1000,
-    props.chatId
-  );*/
+    currChatID
+  );
 
   const addMessage = (text) => {
-    fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats", {
+    const message = {
+      chatId: currChatID,
+      username: username,
+      text: text,
+    };
+    addMessageAPI(message);
+  };
+
+  const addMessageAPI = (message) => {
+    fetch(`https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/messages`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(text),
-    });
+      body: JSON.stringify(message),
+    }).then((response) => response.json());
   };
 
   const addChatRoom = (name) => {
@@ -154,26 +205,22 @@ export const Chat = () => {
     });
   };
 
-  /*
-  const getChats = () => {
-    fetch("https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats")
-      .then((response) => response.json())
-      .then((data) => setChatRoomsList({ rooms: data }));
-  };*/
-
-  const setCurrMessages = (chatId) => {
+  const handleChatRoomClicked = (chatId) => {
     fetch(
-      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${chatId}/messages`
+      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
     )
       .then((response) => response.json())
       .then((data) => {
         setMessages(data.Items);
       });
+
+    setCurrChatID(chatId);
   };
 
   return (
     <div className="App">
-      <table id="displayBox">
+      <UsernameInput setUsername={setUsername} />
+      <table id="displayBox" style={{ overflowY: "scroll" }}>
         <tbody style={{ padding: "0px" }}>
           <tr>
             <td
@@ -187,8 +234,16 @@ export const Chat = () => {
                 borderRadius: "30px",
               }}
             >
-              &nbsp;Chat Rooms
-              <InputNewChat addChatRoom={addChatRoom} />
+              <div
+                style={{
+                  position: "sticky",
+                  top: "10px",
+                  zIndex: "100",
+                }}
+              >
+                &nbsp;Chat Rooms
+                <InputNewChat addChatRoom={addChatRoom} />
+              </div>
               <List>
                 {chatRoomsList.map((room, index) => (
                   <ChatRoomListItem
@@ -196,24 +251,25 @@ export const Chat = () => {
                     index={index}
                     name={room.name}
                     id={room.id}
-                    setCurrMessages={setCurrMessages}
+                    handleChatRoomClicked={handleChatRoomClicked}
                   />
                 ))}
               </List>
             </td>
-            <td style={{ verticalAlign: "top", width: "70%" }}>
-              {messages.map((message, index) => (
+            <td style={{ verticalAlign: "top", width: "100%" }}>
+              {messages.reverse().map((message, index) => (
                 <Message
                   key={index}
                   index={index}
-                  userName={message.userName}
+                  userName={message.username}
                   text={message.text}
+                  signedInUser={username}
                 />
               ))}
             </td>
           </tr>
           <tr style={{ height: "15%" }}>
-            <td style={{ width: "70%" }}>
+            <td style={{ width: "70%", textAlign: "right" }}>
               <SendChatInput addMessage={addMessage} />
             </td>
           </tr>

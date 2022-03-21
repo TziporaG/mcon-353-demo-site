@@ -115,7 +115,6 @@ export const Header = () => {
             {pages.map((page) => (
               <Button
                 key={page.title}
-                onClick={handleCloseNavMenu}
                 sx={{
                   color: pink[500],
                   display: "block",
