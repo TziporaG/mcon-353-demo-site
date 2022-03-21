@@ -20,6 +20,14 @@ function Message(props) {
         display: "block",
       }}
     >
+      <div
+        style={{
+          fontSize: "15px",
+          textAlign: props.userName == props.signedInUser ? "left" : "right",
+        }}
+      >
+        {props.userName}
+      </div>
       <Chip
         icon={<FaceIcon style={{ color: pink[500] }} />}
         label={props.text}
@@ -40,7 +48,7 @@ function ChatRoomListItem(props) {
       <ListItem button>
         <ListItemText
           primary={props.name}
-          onClick={() => props.handleChatRoomClicked(props.id)}
+          onClick={() => props.handleChatRoomClicked(props)}
         />
       </ListItem>
       <Divider />
@@ -101,7 +109,7 @@ function SendChatInput({ addMessage }) {
 
 function UsernameInput({ setUsername }) {
   const [newUsername, setUsernameInput] = useState("");
-  const [signedInUser, setSignedInUser] = useState("");
+  const [signedInUser, setSignedInUser] = useState("Not signed in");
 
   const handleNewUser = (e) => {
     e.preventDefault();
@@ -113,9 +121,8 @@ function UsernameInput({ setUsername }) {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "90%", textAlign: "left", marginLeft: "11%" }}>
       <form onSubmit={handleNewUser}>
-        <span style={{ fontSize: "17px" }}>Current User: {signedInUser}</span>
         <input
           style={{ width: "30%" }}
           className="input"
@@ -134,6 +141,7 @@ function UsernameInput({ setUsername }) {
         >
           Sign in{" "}
         </Button>
+        <div style={{ fontSize: "17px" }}>Current User: {signedInUser}</div>
       </form>
     </div>
   );
@@ -142,9 +150,11 @@ function UsernameInput({ setUsername }) {
 export const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [chatRoomsList, setChatRoomsList] = useState([]);
-  const [currChatID, setCurrChatID] = useState(
-    "952a73df-52d3-432f-afc7-b3c87ea8a09a"
-  );
+  //Set to a default chat
+  const [currChat, setCurrChat] = useState({
+    chatId: "952a73df-52d3-432f-afc7-b3c87ea8a09a",
+    name: "asdf",
+  });
   const [username, setUsername] = useState("");
 
   useInterval(() => {
@@ -158,7 +168,7 @@ export const Chat = () => {
   useInterval(
     () => {
       fetch(
-        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
+        `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChat.chatId}/messages`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -166,12 +176,12 @@ export const Chat = () => {
         });
     },
     1000,
-    currChatID
+    currChat.chatId
   );
 
   const addMessage = (text) => {
     const message = {
-      chatId: currChatID,
+      chatId: currChat.chatId,
       username: username,
       text: text,
     };
@@ -205,16 +215,16 @@ export const Chat = () => {
     });
   };
 
-  const handleChatRoomClicked = (chatId) => {
+  const handleChatRoomClicked = (chat) => {
     fetch(
-      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChatID}/messages`
+      `https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats/${currChat.chatId}/messages`
     )
       .then((response) => response.json())
       .then((data) => {
         setMessages(data.Items);
       });
 
-    setCurrChatID(chatId);
+    setCurrChat({ chat });
   };
 
   return (
@@ -234,42 +244,57 @@ export const Chat = () => {
                 borderRadius: "30px",
               }}
             >
-              <div
-                style={{
-                  position: "sticky",
-                  top: "10px",
-                  zIndex: "100",
-                }}
-              >
-                &nbsp;Chat Rooms
-                <InputNewChat addChatRoom={addChatRoom} />
+              <div className="scrollable">
+                <div
+                  style={{
+                    position: "sticky",
+                    top: "10px",
+                    zIndex: "100",
+                    backgroundColor: "lavenderblush",
+                  }}
+                >
+                  &nbsp;Chat Rooms
+                  <div
+                    style={{
+                      fontSize: "17px",
+                    }}
+                  >
+                    &nbsp;&nbsp;Current Chat Room: {currChat.name}
+                  </div>
+                  <InputNewChat addChatRoom={addChatRoom} />
+                </div>
+                <List>
+                  {chatRoomsList.map((room, index) => (
+                    <ChatRoomListItem
+                      key={index}
+                      index={index}
+                      name={room.name}
+                      id={room.id}
+                      handleChatRoomClicked={handleChatRoomClicked}
+                    />
+                  ))}
+                </List>
               </div>
-              <List>
-                {chatRoomsList.map((room, index) => (
-                  <ChatRoomListItem
-                    key={index}
-                    index={index}
-                    name={room.name}
-                    id={room.id}
-                    handleChatRoomClicked={handleChatRoomClicked}
-                  />
-                ))}
-              </List>
             </td>
             <td style={{ verticalAlign: "top", width: "100%" }}>
-              {messages.reverse().map((message, index) => (
-                <Message
-                  key={index}
-                  index={index}
-                  userName={message.username}
-                  text={message.text}
-                  signedInUser={username}
-                />
-              ))}
+              <div className="scrollable">
+                {messages
+                  .slice(0)
+                  .reverse()
+                  .map((message, index) => (
+                    <Message
+                      key={index}
+                      index={index}
+                      userName={message.username}
+                      text={message.text}
+                      signedInUser={username}
+                    />
+                  ))}
+              </div>
             </td>
           </tr>
           <tr style={{ height: "15%" }}>
-            <td style={{ width: "70%", textAlign: "right" }}>
+            <td style={{ width: "70%" }}>
               <SendChatInput addMessage={addMessage} />
             </td>
           </tr>
