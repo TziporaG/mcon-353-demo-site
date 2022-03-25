@@ -57,7 +57,7 @@ input:focus {
 }
 
 div.scrollable {
-  width: 300px;
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -67,7 +67,7 @@ div.scrollable {
 #displayBox {
   border: 4px solid #e91e63;
   width: 80%;
-  height: 450px;
+  height: 550px;
   margin-top: 10px;
   padding: 0px;
   vertical-align: top;
