@@ -97,6 +97,10 @@ export function Home() {
         </Card>
       </div>
 
+      <br />
+      <br />
+      <br />
+      <br />
       <header className="App-sub-header">Contact Info</header>
 
       <p>
