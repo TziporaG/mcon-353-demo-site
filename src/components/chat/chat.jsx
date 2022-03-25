@@ -239,6 +239,7 @@ export const Chat = () => {
                 verticalAlign: "top",
                 textAlign: "left",
                 width: "30%",
+                maxWidth: "400px",
                 borderRight: "5px solid #e91e63",
                 backgroundColor: "lavenderblush",
                 borderRadius: "30px",
@@ -253,13 +254,13 @@ export const Chat = () => {
                     backgroundColor: "lavenderblush",
                   }}
                 >
-                  &nbsp;Chat Rooms &nbsp;&nbsp;
+                  &nbsp;Chat Rooms
                   <div
                     style={{
                       fontSize: "17px",
                     }}
                   >
-                    Current Chat Room: {currChatName}
+                    &nbsp;&nbsp;Current Chat Room: {currChatName}
                   </div>
                   <InputNewChat addChatRoom={addChatRoom} />
                 </div>

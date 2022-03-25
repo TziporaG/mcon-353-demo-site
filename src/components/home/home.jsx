@@ -15,8 +15,8 @@ export function Home() {
     <div className="App">
       <div style={{ marginBottom: "150px" }}></div>
 
-      <Avatar sx={{ bgcolor: "lavenderblush", width: 80, height: 80 }}>
-        <FavoriteBorderIcon sx={{ color: pink[500], width: 50, height: 50 }} />
+      <Avatar sx={{ bgcolor: "lavenderblush", width: 50, height: 50 }}>
+        <FavoriteBorderIcon sx={{ color: pink[500], width: 30, height: 30 }} />
       </Avatar>
       <br></br>
       <header className="App-header">Hi there, I'm Tzipora.</header>
@@ -31,7 +31,7 @@ export function Home() {
       </p>
       <KeyboardDoubleArrowDownIcon
         className="App-down-arrow"
-        sx={{ color: pink[500], width: 80, height: 100 }}
+        sx={{ color: pink[500], width: 50, height: 80 }}
       />
 
       <div style={{ marginBottom: "250px" }}></div>

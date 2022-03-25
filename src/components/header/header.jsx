@@ -114,6 +114,7 @@ export const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
+                data-testid="header-menu-item"
                 key={page.title}
                 sx={{
                   color: pink[500],

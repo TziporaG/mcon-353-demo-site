@@ -10,6 +10,7 @@ function ToDoItem(props) {
 
   return (
     <table
+      data-testid="to-do-item"
       style={{
         textDecoration: props.todo.isCompleted ? "line-through" : "",
         width: "100%",
@@ -22,7 +23,8 @@ function ToDoItem(props) {
         <tr>
           <td style={{ width: "10%" }}>
             <CheckCircleOutlineIcon
-              fontSize="large"
+              data-testid="complete-to-do"
+              fontSize="medium"
               onClick={() =>
                 listContext.listDispatch({
                   type: "completeItem",
@@ -35,8 +37,9 @@ function ToDoItem(props) {
 
           <td style={{ width: "10%" }}>
             <DeleteOutlineIcon
+              data-testid="remove-to-do"
               sx={{ color: pink[300] }}
-              fontSize="large"
+              fontSize="medium"
               onClick={() =>
                 listContext.listDispatch({
                   type: "removeItem",
@@ -66,18 +69,22 @@ function TodoInputItem() {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <AddCircleOutlineIcon
-        fontSize="large"
-        onClick={handleSubmit}
-      ></AddCircleOutlineIcon>
-      <input
-        className="input"
-        value={inputToDoItem}
-        onChange={(e) => setInputToDoItem(e.target.value)}
-        placeholder=" type here"
-      ></input>
-    </div>
+    <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+      <div>
+        <AddCircleOutlineIcon
+          data-testid="to-do-input-button"
+          fontSize="meduim"
+          onClick={handleSubmit}
+        ></AddCircleOutlineIcon>
+        <input
+          data-testid="to-do-input"
+          className="input"
+          value={inputToDoItem}
+          onChange={(e) => setInputToDoItem(e.target.value)}
+          placeholder=" type here"
+        ></input>
+      </div>
+    </form>
   );
 }
 
