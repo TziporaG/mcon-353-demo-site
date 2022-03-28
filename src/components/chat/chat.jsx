@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import FaceIcon from "@mui/icons-material/Face";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import SendIcon from "@mui/icons-material/Send";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import List from "@mui/material/List";
@@ -16,14 +15,14 @@ function Message(props) {
   return (
     <span
       style={{
-        textAlign: props.userName == props.signedInUser ? "left" : "right",
+        textAlign: props.userName === props.signedInUser ? "left" : "right",
         display: "block",
       }}
     >
       <div
         style={{
           fontSize: "15px",
-          textAlign: props.userName == props.signedInUser ? "left" : "right",
+          textAlign: props.userName === props.signedInUser ? "left" : "right",
         }}
       >
         {props.userName}
