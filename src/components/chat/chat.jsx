@@ -109,7 +109,7 @@ function SendChatInput({ addMessage }) {
 
 function UsernameInput({ setUsername }) {
   const [newUsername, setUsernameInput] = useState("");
-  const [signedInUser, setSignedInUser] = useState("");
+  const [signedInUser, setSignedInUser] = useState("Not signed in");
 
   const handleNewUser = (e) => {
     e.preventDefault();
@@ -154,7 +154,7 @@ export const Chat = () => {
     "952a73df-52d3-432f-afc7-b3c87ea8a09a"
   );
   const [username, setUsername] = useState("");
-  const [currChatName, setCurrChatName] = useState("asdf");
+  const [currChatName, setCurrChatName] = useState("None selected");
 
   useInterval(() => {
     fetch(`https://z36h06gqg7.execute-api.us-east-1.amazonaws.com/chats`)

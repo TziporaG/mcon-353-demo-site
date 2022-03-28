@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import { ToDo } from "../todo/todo";
 
 var initialList = [];
 const changeToDoListReducer = (state, action) => {
