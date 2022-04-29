@@ -1,5 +1,5 @@
 import { ToDo } from "./todo";
-import { getByTestId, render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { TodoProvider } from "../app/context";
 
 describe("Todo component", () => {
